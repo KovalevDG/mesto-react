@@ -5,9 +5,6 @@ import Input from './Input';
 import Button from './Button';
 
 class PopupWithForm extends React.Component {
-   constructor(props) {
-      super(props);
-   }
 
    render() {
 

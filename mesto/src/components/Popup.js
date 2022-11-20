@@ -3,9 +3,7 @@ import Form from "./Form";
 import Input from "./Input";
 
 class Popup extends React.Component {
-   constructor(props) {
-      super(props);
-   }
+
    render() {
       return (
          <div className={`popup popup-${this.props.name} ${this.props.isOpen ? 'popup_opened' : ''}`}>
