@@ -15,7 +15,7 @@ class Card extends React.Component{
                <h2 className="element__text">{this.props.name}</h2>
                <div className="element__like">
                   <button className="element__like-icon" type="button"></button>
-                  <span className="element__like-counter">0</span>
+                  <span className="element__like-counter">{this.props.card.likes.length}</span>
                </div>
             </div>
          </article> 

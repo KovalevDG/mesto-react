@@ -1,6 +1,6 @@
 import React from "react";
 
-class Button extends React.Component{
+class ButtonSubmit extends React.Component{
    render() {
       return (
          <button className="popup__submit-button form__submit-button" type="submit">{ this.props.submitText }</button>
@@ -8,4 +8,4 @@ class Button extends React.Component{
    }
 }
 
-export default Button;
+export default ButtonSubmit;
