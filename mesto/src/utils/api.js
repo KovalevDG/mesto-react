@@ -12,8 +12,16 @@ class Api {
       });
    }
 
-   putLikeCard(cardId) {
-      return this._request(`${this._baseUrl}cards/${cardId}/likes`, {
+   changeLikeCardStatus(card, isLiked) {
+      if (!isLiked) {
+         return this.removeLikeCard(card);
+      } else {
+         return this.putLikeCard(card);
+      }
+   }
+
+   putLikeCard(card) {
+      return this._request(`${this._baseUrl}cards/${card._id}/likes`, {
          method: 'PUT',
          headers: this._headers
       });

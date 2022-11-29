@@ -4,12 +4,14 @@ import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import React from 'react';
+import { api } from '../utils/api.js';
+import { CurrentUserContext, currentUser } from '../contexts/CurrentUserContext';
 import {TITLE_EDIT_PROFILE, TITLE_ADD_CARD, TITLE_EDIT_AVATAR, TITLE_DELETE_CARD, PROFILE_EDIT, CARD_ADD, AVATAR_EDIT, CARD_DELETE} from "../utils/utils.js";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       isEditProfilePopupOpen: false,
       isAddPlacePopupOpen: false,
@@ -17,8 +19,28 @@ class App extends React.Component {
       card: {
         selectedCard: false,
         info: '#',
-      }
+      },
+      currentUser: currentUser,
     }
+  }
+
+  componentDidMount() {
+    api.getUserInfo()
+      .then((user) => {
+        this.setState({
+            currentUser: user,
+          });
+       })
+       .catch(err => {
+          console.log(err);
+       });
+    api.getInitialCards()
+       .then((cards) => {
+          this.setState({ cards: cards });
+       })
+       .catch(err => {
+          console.log(err);
+       });
   }
 
   handleEditAvatarClick = () => {
@@ -59,7 +81,9 @@ class App extends React.Component {
       <div className='page'>
         <div className='page__content'>
           <Header />
-          <Main onEditProfile={this.handleEditProfileClick} onAddPlace={this.handleAddPlaceClick} onEditAvatar={this.handleEditAvatarClick} onCardClick={this.handleCardClick} />
+          <CurrentUserContext.Provider value={this.state.currentUser}>
+            <Main onEditProfile={this.handleEditProfileClick} onAddPlace={this.handleAddPlaceClick} onEditAvatar={this.handleEditAvatarClick} onCardClick={this.handleCardClick} />
+          </CurrentUserContext.Provider>
           <Footer />
           <PopupWithForm name={'edit-profile'} title={TITLE_EDIT_PROFILE} featuresInputForm={PROFILE_EDIT} isOpen={this.state.isEditProfilePopupOpen} onClose={this.closeAllPopups} />
           <PopupWithForm name={'add-card'} title={TITLE_ADD_CARD} featuresInputForm={CARD_ADD} onEditProfile={this.handleEditProfileClick} isOpen={this.state.isAddPlacePopupOpen} onClose={this.closeAllPopups} />
