@@ -6,7 +6,7 @@ import ImagePopup from './ImagePopup';
 import React from 'react';
 import { api } from '../utils/api.js';
 import { CurrentUserContext, currentUser } from '../contexts/CurrentUserContext';
-import {TITLE_EDIT_PROFILE, TITLE_ADD_CARD, TITLE_EDIT_AVATAR, TITLE_DELETE_CARD, PROFILE_EDIT, CARD_ADD, AVATAR_EDIT, CARD_DELETE} from "../utils/utils.js";
+import EditProfilePopup from './EditProfilePopup';
 
 class App extends React.Component {
   constructor(props) {
@@ -85,10 +85,8 @@ class App extends React.Component {
             <Main onEditProfile={this.handleEditProfileClick} onAddPlace={this.handleAddPlaceClick} onEditAvatar={this.handleEditAvatarClick} onCardClick={this.handleCardClick} />
           </CurrentUserContext.Provider>
           <Footer />
-          <PopupWithForm name={'edit-profile'} title={TITLE_EDIT_PROFILE} featuresInputForm={PROFILE_EDIT} isOpen={this.state.isEditProfilePopupOpen} onClose={this.closeAllPopups} />
-          <PopupWithForm name={'add-card'} title={TITLE_ADD_CARD} featuresInputForm={CARD_ADD} onEditProfile={this.handleEditProfileClick} isOpen={this.state.isAddPlacePopupOpen} onClose={this.closeAllPopups} />
-          <PopupWithForm name={'edit-avatar'} title={TITLE_EDIT_AVATAR} featuresInputForm={AVATAR_EDIT} isOpen={this.state.isEditAvatarPopupOpen} onClose={this.closeAllPopups} />
-          <PopupWithForm name={'delete-card'} title={TITLE_DELETE_CARD} featuresInputForm={CARD_DELETE} onClose={this.closeAllPopups} />
+          <EditProfilePopup isOpen={this.isEditProfilePopupOpen} onClose={this.closeAllPopups} />
+
           <ImagePopup card={this.state.card}  onClose={this.closeAllPopups} />
         </div>
       </div>

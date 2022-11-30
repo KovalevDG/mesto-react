@@ -13,15 +13,32 @@ class Main extends React.Component {
       }
    }
 
+   getNewStateCards(newCard, card) {
+      return this.state.cards.map((c) => c._id === card._id ? newCard : c);
+   }
+
    handleCardLike = (card) => {
       this.isLiked = card.likes.some(i => i._id === this.context._id);
       api.changeLikeCardStatus(card, !this.isLiked)
          .then((newCard) => {
-            this.setState((state) => {
-               state.cards.map((c) => c._id === card._id ? newCard : c);
-            });
+            this.cards = this.getNewStateCards(newCard, card);
+            this.setState({cards: this.cards});
          });
-  } 
+   }
+
+   deleteCards(card) {
+      return this.state.cards.filter((c) => {
+         return c._id !== card._id;       
+      });
+   }
+
+   handleCardDelete = (card) => {
+      this.cards = this.deleteCards(card);
+      api.deleteCard(card)
+         .then((card) => {
+            this.setState({cards: this.cards});
+         })
+   }
 
    componentDidMount() {
       api.getInitialCards()
@@ -52,7 +69,7 @@ class Main extends React.Component {
                {  
                   this.state.cards.map((card) => {
                      return (
-                        <Card key={card._id} card={card} onCardClick={this.props.onCardClick} onCardLike={this.handleCardLike} />
+                        <Card key={card._id} card={card} onCardClick={this.props.onCardClick} onCardLike={this.handleCardLike} onCardDelete={this.handleCardDelete} />
                      );  
                   })   
                }

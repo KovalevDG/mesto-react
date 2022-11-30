@@ -15,6 +15,10 @@ class Card extends React.Component{
       this.props.onCardLike(this.props.card);
    }
 
+   handleDeleteClick = () => {
+      this.props.onCardDelete(this.props.card);
+   }
+
    render() {
       this.isOwn = this.props.card.owner._id === this.context._id;
       this.cardDeleteButtonClassName = (
@@ -25,7 +29,7 @@ class Card extends React.Component{
       return (
          <article className="element">
             <div className="element__image" style={{ backgroundImage: `url(${this.props.card.link})` }} onClick={this.handleClick} />
-            <button className={this.cardDeleteButtonClassName}type="button"></button>
+            <button className={this.cardDeleteButtonClassName} onClick={this.handleDeleteClick} type="button"></button>
             <div className="element__description">
                <h2 className="element__text">{this.props.card.name}</h2>
                <div className="element__like">
