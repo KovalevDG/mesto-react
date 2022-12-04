@@ -1,6 +1,4 @@
 import React from "react";
-import Form from "./Form";
-import Input from "./Input";
 
 class Popup extends React.Component {
 
