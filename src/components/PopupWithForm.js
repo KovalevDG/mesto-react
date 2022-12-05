@@ -4,22 +4,20 @@ import Form from './Form';
 import Input from './Input';
 import Button from './ButtonSubmit';
 
-class PopupWithForm extends React.Component {
-
-   render() {
-      return (
-         <Popup name={this.props.name} title={this.props.title} isOpen={this.props.isOpen} onClose={this.props.onClose}>
-            <Form name={this.props.name}>
-               {  
-                  this.props.featuresInputForm.inputs.map((input) => {
-                     return (<Input key={input.inputId} inputId={input.inputId} inputName={input.inputName} inputPlaceholder={input.inputPlaceholder} inputValue={this.props.currentUser} onChange={this.props.onChange} />)
-                  })                       
-               }
-               <Button submitText={this.props.featuresInputForm.submitText} />
-            </Form>
-         </Popup>
-      );
-   }
+function PopupWithForm(props) {
+   console.log(props.currentUser);
+   return (
+      <Popup name={props.name} title={props.title} isOpen={props.isOpen} onClose={props.onClose}>
+         <Form name={props.name}>
+            {  
+               props.featuresInputForm.inputs.map((input) => {
+                  return (<Input key={input.inputId} inputId={input.inputId} inputName={input.inputName} inputPlaceholder={input.inputPlaceholder} inputValue={props.currentUser} onChange={props.onChange} />)
+               })                       
+            }
+            <Button submitText={props.featuresInputForm.submitText} />
+         </Form>
+      </Popup>
+   );
 }
 
 export default PopupWithForm;
