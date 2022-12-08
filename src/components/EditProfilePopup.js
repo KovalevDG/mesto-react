@@ -5,33 +5,27 @@ import {TITLE_EDIT_PROFILE, PROFILE_EDIT} from "../utils/utils.js";
 
 function EditProfilePopup(props) {
    const currentUser = React.useContext(CurrentUserContext);
-   const [userName, setName] = React.useState({name: currentUser.name});
-   const [userDescription, setDescription] = React.useState({ about: currentUser.about });
-   
-   const userInfo = {
-      name: userName,
-      about: userDescription,
-   }
+   const [values, setValues] = React.useState({name: currentUser.name, about: currentUser.about});
 
    React.useEffect(() => {
-      setName(currentUser.name || '');
-      setDescription(currentUser.about || '');
-      }, [currentUser])
-
+      setValues({ 
+         name: currentUser.name || '',
+         about: currentUser.about || '',
+       });
+   }, [currentUser]);
+      
    const handleChange = (evt) => {
-      setName(evt.target.value);
-      setDescription(evt.target.value);
-      userInfo.name = userName;
-      userInfo.about = userDescription;
+      setValues({ ...values, [evt.target.name]: evt.target.value });
    }
 
    
-   // function handleSubmit(evt) {
-
-   // }
+   const handleSubmit = (evt) => {
+      evt.preventDefault();
+      props.onUpdateUser(values);
+   }
 
    return (
-      <PopupWithForm name={'edit-profile'} title={TITLE_EDIT_PROFILE} featuresInputForm={PROFILE_EDIT} isOpen={props.isOpen} onClose={props.onClose} currentUser={userInfo} onChange={handleChange} />
+      <PopupWithForm name={'edit-profile'} title={TITLE_EDIT_PROFILE} featuresInputForm={PROFILE_EDIT} isOpen={props.isOpen} onClose={props.onClose} currentUser={values} onChange={handleChange} onSubmit={handleSubmit} />
    );
 }
 
