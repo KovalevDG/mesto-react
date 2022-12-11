@@ -76,15 +76,19 @@ class App extends React.Component {
       });
   }
 
-  handleUpdateAvatar = (data) => {
-    api.editUserAvatar(data)
-      .then((url) => {
-        console.log(this.state.currentUser);
-        // this.setState({
-        //   currentUser: url,
-        // });
+  handleUpdateAvatar = (avatar) => {
+    console.log(avatar);
+    api.editUserAvatar(avatar)
+      .then((data) => {
+        console.log(data);
+        this.setState({
+          currentUser: data,
+        });
         this.closeAllPopups();
       })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   closeAllPopups = () => {

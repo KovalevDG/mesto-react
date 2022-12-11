@@ -36,6 +36,7 @@ class Api {
    }
 
    editUserInfo(data) {
+      console.log(data);
       return this._request(`${this._baseUrl}users/me`, {
          method: 'PATCH',
          headers: this._headers,
@@ -44,12 +45,11 @@ class Api {
    }
 
    editUserAvatar(data) {
+      console.log(data);
       return this._request(`${this._baseUrl}users/me/avatar`, {
          method: 'PATCH',
-         body: JSON.stringify({
-            avatar: data.avatar
-         }),
-         headers: this._headers
+         headers: this._headers,
+         body: JSON.stringify(data)
       });
    }
 
