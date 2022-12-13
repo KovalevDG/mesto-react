@@ -2,6 +2,7 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import ImagePopup from './ImagePopup';
+import AddPlacePopup from './AddPlacePopup';
 import React from 'react';
 import { api } from '../utils/api.js';
 import { CurrentUserContext, currentUser } from '../contexts/CurrentUserContext';
@@ -9,12 +10,14 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 
 class App extends React.Component {
+  static contextType = CurrentUserContext;
   constructor(props) {
     super(props);
     this.state = {
       isEditProfilePopupOpen: false,
       isAddPlacePopupOpen: false,
       isEditAvatarPopupOpen: false,
+      cards: [],
       card: {
         selectedCard: false,
         info: '#',
@@ -77,10 +80,8 @@ class App extends React.Component {
   }
 
   handleUpdateAvatar = (avatar) => {
-    console.log(avatar);
     api.editUserAvatar(avatar)
       .then((data) => {
-        console.log(data);
         this.setState({
           currentUser: data,
         });
@@ -89,6 +90,44 @@ class App extends React.Component {
       .catch(err => {
         console.log(err);
       });
+  }
+
+  getNewStateCards(newCard, card) {
+    return this.state.cards.map((c) => c._id === card._id ? newCard : c);
+  }
+
+  handleCardLike = (card) => {
+    this.isLiked = card.likes.some(i => i._id === this.state.currentUser._id);
+    api.changeLikeCardStatus(card, !this.isLiked)
+      .then((newCard) => {
+        this.cards = this.getNewStateCards(newCard, card);
+        this.setState({cards: this.cards});
+      });
+  }
+
+  deleteCards(card) {
+    return this.state.cards.filter((c) => {
+      return c._id !== card._id;       
+    });
+  }
+
+  handleCardDelete = (card) => {
+    this.cards = this.deleteCards(card);
+    api.deleteCard(card)
+      .then((card) => {
+        this.setState({cards: this.cards});
+      })
+  }
+
+  handleAddPlaceSubmit = (card) => {
+    api.postCards(card)
+      .then((cards) => {
+        this.setState({ cards: [cards, ...this.state.cards] });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    this.closeAllPopups();
   }
 
   closeAllPopups = () => {
@@ -109,13 +148,11 @@ class App extends React.Component {
         <div className='page__content'>
           <Header />
           <CurrentUserContext.Provider value={this.state.currentUser}>
-            <Main onEditProfile={this.handleEditProfileClick} onAddPlace={this.handleAddPlaceClick} onEditAvatar={this.handleEditAvatarClick} onCardClick={this.handleCardClick} />
+            <Main onEditProfile={this.handleEditProfileClick} onAddPlace={this.handleAddPlaceClick} onEditAvatar={this.handleEditAvatarClick} onCardClick={this.handleCardClick} cards={this.state.cards} onCardLike={this.handleCardLike} onCardDelete={this.handleCardDelete} />
             <Footer />
             <EditProfilePopup isOpen={this.state.isEditProfilePopupOpen} onClose={this.closeAllPopups} onUpdateUser={this.handleUpdateUser} />
             <EditAvatarPopup isOpen={this.state.isEditAvatarPopupOpen} onClose={this.closeAllPopups} onUpdateAvatar={this.handleUpdateAvatar} />
-            {/* <PopupWithForm name={'add-card'} title={TITLE_ADD_CARD} featuresInputForm={CARD_ADD} onEditProfile={this.handleEditProfileClick} isOpen={this.props.onEditProfile} onClose={this.props.onClose} />
-            <PopupWithForm name={'edit-avatar'} title={TITLE_EDIT_AVATAR} featuresInputForm={AVATAR_EDIT} isOpen={this.props.onEditProfile} onClose={this.props.onClose} />
-            <PopupWithForm name={'delete-card'} title={TITLE_DELETE_CARD} featuresInputForm={CARD_DELETE} onClose={this.props.onClose} /> */}
+            <AddPlacePopup isOpen={this.state.isAddPlacePopupOpen} onClose={this.closeAllPopups} onAddPlace={this.handleAddPlaceSubmit} />
           </CurrentUserContext.Provider>
           <ImagePopup card={this.state.card}  onClose={this.closeAllPopups} />
         </div>

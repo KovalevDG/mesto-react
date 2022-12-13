@@ -8,47 +8,47 @@ class Main extends React.Component {
    constructor(props) {
       super(props);
 
-      this.state = {
-         cards: [],
-      }
+      // this.state = {
+      //    cards: [],
+      // }
    }
 
-   getNewStateCards(newCard, card) {
-      return this.state.cards.map((c) => c._id === card._id ? newCard : c);
-   }
+   // getNewStateCards(newCard, card) {
+   //    return this.state.cards.map((c) => c._id === card._id ? newCard : c);
+   // }
 
-   handleCardLike = (card) => {
-      this.isLiked = card.likes.some(i => i._id === this.context._id);
-      api.changeLikeCardStatus(card, !this.isLiked)
-         .then((newCard) => {
-            this.cards = this.getNewStateCards(newCard, card);
-            this.setState({cards: this.cards});
-         });
-   }
+   // handleCardLike = (card) => {
+   //    this.isLiked = card.likes.some(i => i._id === this.context._id);
+   //    api.changeLikeCardStatus(card, !this.isLiked)
+   //       .then((newCard) => {
+   //          this.cards = this.getNewStateCards(newCard, card);
+   //          this.setState({cards: this.cards});
+   //       });
+   // }
 
-   deleteCards(card) {
-      return this.state.cards.filter((c) => {
-         return c._id !== card._id;       
-      });
-   }
+   // deleteCards(card) {
+   //    return this.state.cards.filter((c) => {
+   //       return c._id !== card._id;       
+   //    });
+   // }
 
-   handleCardDelete = (card) => {
-      this.cards = this.deleteCards(card);
-      api.deleteCard(card)
-         .then((card) => {
-            this.setState({cards: this.cards});
-         })
-   }
+   // handleCardDelete = (card) => {
+   //    this.cards = this.deleteCards(card);
+   //    api.deleteCard(card)
+   //       .then((card) => {
+   //          this.setState({cards: this.cards});
+   //       })
+   // }
 
-   componentDidMount() {
-      api.getInitialCards()
-         .then((cards) => {
-            this.setState({ cards: cards });
-         })
-         .catch(err => {
-            console.log(err);
-         });
-    }
+   // componentDidMount() {
+   //    api.getInitialCards()
+   //       .then((cards) => {
+   //          this.setState({ cards: cards });
+   //       })
+   //       .catch(err => {
+   //          console.log(err);
+   //       });
+   //  }
 
    render() {
       return (
@@ -67,9 +67,9 @@ class Main extends React.Component {
             </section>
             <div className="elements">
                {  
-                  this.state.cards.map((card) => {
+                  this.props.cards.map((card) => {
                      return (
-                        <Card key={card._id} card={card} onCardClick={this.props.onCardClick} onCardLike={this.handleCardLike} onCardDelete={this.handleCardDelete} />
+                        <Card key={card._id} card={card} onCardClick={this.props.onCardClick} onCardLike={this.props.onCardLike} onCardDelete={this.props.onCardDelete} />
                      );  
                   })   
                }

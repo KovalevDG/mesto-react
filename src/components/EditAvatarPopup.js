@@ -8,10 +8,6 @@ function EditAvatarPopup(props) {
    const [avatar, setAvatar] = React.useState({ avatar: currentUser.avatar });
    const inputRef = React.useRef();
 
-   // const handleChange = (evt) => {
-   //    setAvatar({ avatar: evt.target.value });
-   // }
-
    const handleSubmit = (evt) => {
       evt.preventDefault();
       props.onUpdateAvatar({
