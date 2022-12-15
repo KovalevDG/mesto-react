@@ -3,7 +3,14 @@ import PopupWithForm from "./PopupWithForm";
 import {TITLE_ADD_CARD, CARD_ADD} from "../utils/utils.js";
 
 function AddPlacePopup(props) {
-   const [values, setValues] = React.useState({name: '', link: ''});
+   const [values, setValues] = React.useState({ name: '', link: '' });
+   
+   React.useEffect(() => {
+      setValues({
+         name: '',
+         link: '',
+      })
+   }, [props.isOpen]);
 
    const handleSubmit = (evt) => {
       evt.preventDefault();
