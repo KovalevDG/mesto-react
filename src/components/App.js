@@ -102,6 +102,9 @@ class App extends React.Component {
       .then((newCard) => {
         this.cards = this.getNewStateCards(newCard, card);
         this.setState({cards: this.cards});
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
 
@@ -117,6 +120,9 @@ class App extends React.Component {
       .then((card) => {
         this.setState({cards: this.cards});
       })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   handleAddPlaceSubmit = (card) => {

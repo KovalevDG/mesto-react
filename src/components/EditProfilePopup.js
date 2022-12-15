@@ -12,7 +12,7 @@ function EditProfilePopup(props) {
          name: currentUser.name || '',
          about: currentUser.about || '',
        });
-   }, [currentUser]);
+   }, [currentUser, props.isOpen]);
       
    const handleChange = (evt) => {
       setValues({ ...values, [evt.target.name]: evt.target.value });
